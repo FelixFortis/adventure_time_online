@@ -18,7 +18,12 @@ defmodule AdventureTimeOnlineWeb.Router do
 
     get "/", HeroController, :new
 
-    resources "/heroes", HeroController, only: [:new, :create, :delete]
+    resources "/heroes", HeroController, only: [:new, :create]
+    delete "/heroes", HeroController, :remove_hero
+    post "/heroes/left", HeroController, :move_left
+    post "/heroes/right", HeroController, :move_right
+    post "/heroes/up", HeroController, :move_up
+    post "/heroes/down", HeroController, :move_down
     get "/game", HeroController, :game
   end
 

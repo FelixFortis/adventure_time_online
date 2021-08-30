@@ -35,7 +35,7 @@ defmodule AdventureTimeOnlineWeb.HeroController do
     end
   end
 
-  def delete(conn, _params) do
+  def remove_hero(conn, _params) do
     hero_name = get_session(conn, :current_hero)
 
     case HeroSupervisor.stop_hero(hero_name) do
@@ -64,6 +64,90 @@ defmodule AdventureTimeOnlineWeb.HeroController do
         conn
         |> assign(:hero_name, hero_name)
         |> render("game.html", arena: arena, hero_name: hero_name)
+
+      nil ->
+        conn
+        |> put_flash(:error, "Hero not found!")
+        |> redirect(to: Routes.hero_path(conn, :new))
+    end
+  end
+
+  def move_left(conn, _params) do
+    hero_name = get_session(conn, :current_hero)
+
+    case HeroServer.hero_pid(hero_name) do
+      pid when is_pid(pid) ->
+        hero_current_tile_ref = HeroServer.tile_ref(hero_name)
+        {y_axis, x_axis} = hero_current_tile_ref
+        new_tile_ref = {y_axis, x_axis - 1}
+
+        HeroServer.move_to(hero_name, new_tile_ref)
+
+        conn
+        |> redirect(to: Routes.hero_path(conn, :game))
+
+      nil ->
+        conn
+        |> put_flash(:error, "Hero not found!")
+        |> redirect(to: Routes.hero_path(conn, :new))
+    end
+  end
+
+  def move_right(conn, _params) do
+    hero_name = get_session(conn, :current_hero)
+
+    case HeroServer.hero_pid(hero_name) do
+      pid when is_pid(pid) ->
+        hero_current_tile_ref = HeroServer.tile_ref(hero_name)
+        {y_axis, x_axis} = hero_current_tile_ref
+        new_tile_ref = {y_axis, x_axis + 1}
+
+        HeroServer.move_to(hero_name, new_tile_ref)
+
+        conn
+        |> redirect(to: Routes.hero_path(conn, :game))
+
+      nil ->
+        conn
+        |> put_flash(:error, "Hero not found!")
+        |> redirect(to: Routes.hero_path(conn, :new))
+    end
+  end
+
+  def move_up(conn, _params) do
+    hero_name = get_session(conn, :current_hero)
+
+    case HeroServer.hero_pid(hero_name) do
+      pid when is_pid(pid) ->
+        hero_current_tile_ref = HeroServer.tile_ref(hero_name)
+        {y_axis, x_axis} = hero_current_tile_ref
+        new_tile_ref = {y_axis - 1, x_axis}
+
+        HeroServer.move_to(hero_name, new_tile_ref)
+
+        conn
+        |> redirect(to: Routes.hero_path(conn, :game))
+
+      nil ->
+        conn
+        |> put_flash(:error, "Hero not found!")
+        |> redirect(to: Routes.hero_path(conn, :new))
+    end
+  end
+
+  def move_down(conn, _params) do
+    hero_name = get_session(conn, :current_hero)
+
+    case HeroServer.hero_pid(hero_name) do
+      pid when is_pid(pid) ->
+        hero_current_tile_ref = HeroServer.tile_ref(hero_name)
+        {y_axis, x_axis} = hero_current_tile_ref
+        new_tile_ref = {y_axis + 1, x_axis}
+
+        HeroServer.move_to(hero_name, new_tile_ref)
+
+        conn
+        |> redirect(to: Routes.hero_path(conn, :game))
 
       nil ->
         conn
