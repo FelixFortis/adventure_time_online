@@ -4,30 +4,43 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>AdventureTimeOnline · Phoenix Framework</title>
-    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
+    <title>Adventure Time Online</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
-  <body>
-    <header>
-      <section class="container">
-        <nav role="navigation">
-          <ul>
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
-            <% end %>
-          </ul>
-        </nav>
-        <a href="https://phoenixframework.org/" class="phx-logo">
-          <img src="<%= Routes.static_path(@conn, "/images/phoenix.png") %>" alt="Phoenix Framework Logo"/>
-        </a>
-      </section>
-    </header>
-    <main role="main" class="container">
-      <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-      <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-      <%= @inner_content %>
-    </main>
+  <body class=" bg-gray-100">
+    <!-- This example requires Tailwind CSS v2.0+ -->
+    <div>
+      <nav class="bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center justify-between h-16">
+            <a href="#" class="text-gray-300 hover:bg-gray-700 hover:text-white py-2 rounded-md text-xl font-semibold">
+              Adventure Time Online
+            </a>
+          </div>
+        </div>
+      </nav>
+
+      <main>
+        <header class="bg-white shadow-sm">
+          <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+            <h1 class="text-lg leading-6 font-semibold text-gray-900">
+              Dashboard
+            </h1>
+          </div>
+        </header>
+        <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+          <!-- Replace with your content -->
+          <div class="px-4 py-4 sm:px-0">
+            <div class="border-4 border-dashed border-gray-200 rounded-lg h-96">
+              <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
+              <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
+              <%= @inner_content %>
+            </div>
+          </div>
+          <!-- /End replace -->
+        </div>
+      </main>
+    </div>
   </body>
 </html>
