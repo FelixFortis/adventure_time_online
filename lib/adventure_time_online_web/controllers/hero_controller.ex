@@ -3,7 +3,7 @@ defmodule AdventureTimeOnlineWeb.HeroController do
 
   plug :require_hero when action in [:game]
 
-  alias AdventureTime.{HeroServer, HeroSupervisor, Arena, GameTile, NameGenerator}
+  alias AdventureTime.{HeroServer, HeroSupervisor, Arena, NameGenerator}
 
   def new(conn, _params) do
     render(conn, "new.html")
