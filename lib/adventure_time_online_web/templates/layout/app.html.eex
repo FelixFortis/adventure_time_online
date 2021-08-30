@@ -8,7 +8,7 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
-  <body class=" bg-gray-100">
+  <body class=" bg-gray-50">
     <!-- This example requires Tailwind CSS v2.0+ -->
     <div>
       <nav class="bg-gray-800">
@@ -25,18 +25,16 @@
         <header class="bg-white shadow-sm">
           <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
             <h1 class="text-lg leading-6 font-semibold text-gray-900">
-              Dashboard
+              <%= @view_module.header(@view_template, assigns) %>
             </h1>
           </div>
         </header>
         <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
           <!-- Replace with your content -->
-          <div class="px-4 py-4 sm:px-0">
-            <div class="border-4 border-dashed border-gray-200 rounded-lg h-96">
-              <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
-              <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-              <%= @inner_content %>
-            </div>
+          <div class="px-4 py-4 sm:px-0 h-96">
+            <p class="text-blue-500" role="alert"><%= get_flash(@conn, :info) %></p>
+            <p class="text-red-500" role="alert"><%= get_flash(@conn, :error) %></p>
+            <%= @inner_content %>
           </div>
           <!-- /End replace -->
         </div>

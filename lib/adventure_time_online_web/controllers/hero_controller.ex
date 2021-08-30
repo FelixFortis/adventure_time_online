@@ -35,6 +35,26 @@ defmodule AdventureTimeOnlineWeb.HeroController do
     end
   end
 
+  def delete(conn, _params) do
+    hero_name = get_session(conn, :current_hero)
+
+    case HeroSupervisor.stop_hero(hero_name) do
+      :ok ->
+        conn
+        |> clear_session()
+        |> redirect(to: Routes.hero_path(conn, :new))
+
+      {:error, _error} ->
+        conn
+        |> put_flash(
+          :error,
+          "Couldn't find hero, try clearing your browser cache and refreshing the page"
+        )
+        |> clear_session()
+        |> redirect(to: Routes.hero_path(conn, :new))
+    end
+  end
+
   def game(conn, _params) do
     arena = Arena.arena_as_list()
     hero_name = get_session(conn, :current_hero)
