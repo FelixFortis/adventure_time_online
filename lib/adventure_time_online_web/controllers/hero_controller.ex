@@ -156,6 +156,23 @@ defmodule AdventureTimeOnlineWeb.HeroController do
     end
   end
 
+  def attack(conn, _params) do
+    hero_name = get_session(conn, :current_hero)
+
+    case HeroServer.hero_pid(hero_name) do
+      pid when is_pid(pid) ->
+        HeroServer.attack(hero_name)
+
+        conn
+        |> redirect(to: Routes.hero_path(conn, :game))
+
+      nil ->
+        conn
+        |> put_flash(:error, "Hero not found!")
+        |> redirect(to: Routes.hero_path(conn, :new))
+    end
+  end
+
   defp require_hero(conn, _opts) do
     if get_session(conn, :current_hero) do
       conn
