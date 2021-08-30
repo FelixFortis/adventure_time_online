@@ -7,8 +7,8 @@ defmodule AdventureTimeOnlineWeb.HeroView do
     ~e{Create a Hero!}
   end
 
-  def header("game.html", _assigns) do
-    ~e{hero name should be here}
+  def header("game.html", assigns) do
+    assigns.hero_name
   end
 
   def draw_tile(game_tile, hero_name) do
