@@ -21,11 +21,13 @@ defmodule AdventureTimeOnlineWeb.Router do
     resources "/heroes", HeroController, only: [:new, :create]
 
     delete "/heroes", HeroController, :remove_hero
+    patch "heroes/respawn", HeroController, :respawn
 
-    post "/heroes/left", HeroController, :move_left
-    post "/heroes/right", HeroController, :move_right
-    post "/heroes/up", HeroController, :move_up
-    post "/heroes/down", HeroController, :move_down
+    patch "/heroes/left", HeroController, :move_left
+    patch "/heroes/right", HeroController, :move_right
+    patch "/heroes/up", HeroController, :move_up
+    patch "/heroes/down", HeroController, :move_down
+
     post "/heroes/attack", HeroController, :attack
 
     get "/game", HeroController, :game
