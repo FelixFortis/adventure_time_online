@@ -18,9 +18,8 @@ defmodule AdventureTimeOnlineWeb.Router do
 
     get "/", HeroController, :new
 
-    resources "/heroes", HeroController, only: [:new, :create, :show]
-
-    resources "/sessions", SessionController, only: [:new, :create, :delete], singleton: true
+    resources "/heroes", HeroController, only: [:new, :create, :delete]
+    get "/game", HeroController, :game
   end
 
   # Other scopes may use custom stacks.
