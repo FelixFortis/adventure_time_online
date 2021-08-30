@@ -1,22 +1,22 @@
 defmodule AdventureTimeOnlineWeb.HeroController do
   use AdventureTimeOnlineWeb, :controller
 
-  plug :require_hero
+  plug :require_hero when action in [:game]
 
-  alias AdventureTime.{HeroServer, HeroSupervisor}
+  alias AdventureTime.{HeroServer, HeroSupervisor, Arena, GameTile, NameGenerator}
 
   def new(conn, _params) do
     render(conn, "new.html")
   end
 
-  def create(conn, %{"hero" => %{"name" => name}}) do
+  def create(conn, %{"hero" => %{"hero_name" => name}}) do
     hero_name =
       case name do
         "" ->
-          AdventureTime.Hero.random_name()
+          NameGenerator.generate()
 
         nil ->
-          AdventureTime.Hero.random_name()
+          NameGenerator.generate()
 
         _ ->
           name
@@ -26,7 +26,7 @@ defmodule AdventureTimeOnlineWeb.HeroController do
       {:ok, _hero_pid} ->
         conn
         |> put_session(:current_hero, hero_name)
-        |> redirect(to: Routes.hero_path(conn, :game, hero_name))
+        |> redirect(to: Routes.hero_path(conn, :game))
 
       {:error, _error} ->
         conn
