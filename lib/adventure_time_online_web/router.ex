@@ -16,7 +16,11 @@ defmodule AdventureTimeOnlineWeb.Router do
   scope "/", AdventureTimeOnlineWeb do
     pipe_through :browser
 
-    get "/", PageController, :index
+    get "/", HeroController, :new
+
+    resources "/heroes", HeroController, only: [:new, :create, :show]
+
+    resources "/sessions", SessionController, only: [:new, :create, :delete], singleton: true
   end
 
   # Other scopes may use custom stacks.
