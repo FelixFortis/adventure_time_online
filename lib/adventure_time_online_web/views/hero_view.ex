@@ -11,6 +11,13 @@ defmodule AdventureTimeOnlineWeb.HeroView do
     assigns.hero_name
   end
 
+  def refresh("game.html", _assigns) do
+    ~e{<meta http-equiv="refresh" content="1" >}
+  end
+
+  def refresh("new.html", _assigns) do
+  end
+
   def draw_tile(game_tile, hero_name) do
     cond do
       game_tile.walkable == false ->
