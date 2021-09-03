@@ -44,7 +44,7 @@ defmodule AdventureTimeOnline.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:adventure_time, git: "https://github.com/FelixFortis/adventure_time.git", tag: "v0.1.1"}
+      {:adventure_time, git: "https://github.com/FelixFortis/adventure_time.git", tag: "v0.1.2"}
       # {:adventure_time, path: "../adventure_time"}
     ]
   end

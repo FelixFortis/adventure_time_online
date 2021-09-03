@@ -19,7 +19,7 @@
           <tr>
             <td class="pr-2"><%= elem(hd(row).tile_ref, 0) %></td>
             <%= for game_tile <- row do %>
-              <%= draw_tile(game_tile, assigns.current_hero) %>
+              <%= draw_tile(game_tile, @current_hero) %>
             <% end %>
           </tr>
         <% end %>
@@ -30,13 +30,13 @@
         <button phx-click="left" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Left</button>
       </div>
       <div class="mr-2">
-        <button phx-click="down" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Right</button>
-      </div>
-      <div class="mr-2">
         <button phx-click="up" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Up</button>
       </div>
       <div class="mr-2">
-        <button phx-click="right" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Down</button>
+        <button phx-click="down" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Down</button>
+      </div>
+      <div class="mr-2">
+        <button phx-click="right" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Right</button>
       </div>
       <div>
         <button phx-click="attack" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Attack</button>
