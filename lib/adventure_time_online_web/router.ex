@@ -21,17 +21,7 @@ defmodule AdventureTimeOnlineWeb.Router do
 
     resources "/heroes", HeroController, only: [:new, :create]
 
-    delete "/heroes", HeroController, :remove_hero
-    patch "/heroes/respawn", HeroController, :respawn
-
-    patch "/heroes/left", HeroController, :move_left
-    patch "/heroes/right", HeroController, :move_right
-    patch "/heroes/up", HeroController, :move_up
-    patch "/heroes/down", HeroController, :move_down
-
-    post "/heroes/attack", HeroController, :attack
-
-    live "/game", HeroLive, :game
+    live "/game", HeroLive
   end
 
   # Other scopes may use custom stacks.
