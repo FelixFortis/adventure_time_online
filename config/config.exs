@@ -13,7 +13,7 @@ config :adventure_time_online, AdventureTimeOnlineWeb.Endpoint,
   secret_key_base: "RiGfQWT85OjCjpN2SqniAoZzkv7TbL//JfAluwxTShaHUN86fwCCMf9JxxoO3urr",
   render_errors: [view: AdventureTimeOnlineWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: AdventureTimeOnline.PubSub,
-  live_view: [signing_salt: "qrh9tyJa"]
+  live_view: [signing_salt: "14ePnkJuwp5qw/fI8XXdhgqm7K9Q2S/x"]
 
 # Configures Elixir's Logger
 config :logger, :console,

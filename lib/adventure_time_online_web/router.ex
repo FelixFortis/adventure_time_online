@@ -4,7 +4,8 @@ defmodule AdventureTimeOnlineWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :fetch_flash
+    plug :fetch_live_flash
+    plug :put_root_layout, {AdventureTimeOnlineWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -30,7 +31,7 @@ defmodule AdventureTimeOnlineWeb.Router do
 
     post "/heroes/attack", HeroController, :attack
 
-    get "/game", HeroController, :game
+    live "/game", HeroLive, :game
   end
 
   # Other scopes may use custom stacks.
