@@ -1,5 +1,6 @@
 defmodule AdventureTimeOnlineWeb.PageControllerTest do
   use AdventureTimeOnlineWeb.ConnCase
+  alias AdventureTimeOnlineWeb.HeroLive
 
   setup do
     Application.stop(:adventure_time)
@@ -26,29 +27,16 @@ defmodule AdventureTimeOnlineWeb.PageControllerTest do
     test "it creates a hero, adds them to the session and redirects the user to the game page",
          %{conn: conn} do
       conn = post(conn, Routes.hero_path(conn, :create), hero: %{"hero_name" => "test_hero"})
+      hero = Plug.Conn.get_session(conn, :current_hero)
 
-      assert Plug.Conn.get_session(conn, :current_hero) == "test_hero"
-      assert redirected_to(conn) == Routes.hero_path(conn, :game)
+      assert hero.name == "test_hero"
+      assert hero.tag == :test_hero
+      assert redirected_to(conn) == Routes.live_path(conn, HeroLive)
 
-      conn = get(conn, Routes.hero_path(conn, :game))
+      conn = get(conn, Routes.live_path(conn, HeroLive))
 
       assert html_response(conn, 200) =~ "test_hero"
       assert html_response(conn, 200) =~ "End Game"
-    end
-  end
-
-  describe "end game" do
-    test "it removes the hero from the session and redirects the user to the hero creation page",
-         %{conn: conn} do
-      conn = post(conn, Routes.hero_path(conn, :create), hero: %{"hero_name" => "test_hero"})
-      conn = delete(conn, Routes.hero_path(conn, :remove_hero))
-
-      assert Plug.Conn.get_session(conn, :current_hero) == nil
-      assert redirected_to(conn) == Routes.hero_path(conn, :new)
-
-      conn = get(conn, Routes.hero_path(conn, :new))
-
-      assert html_response(conn, 200) =~ "Create a Hero!"
     end
   end
 end

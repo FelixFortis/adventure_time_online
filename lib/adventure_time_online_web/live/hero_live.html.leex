@@ -15,11 +15,11 @@
           <td class="text-center">8</td>
           <td class="text-center">9</td>
         </tr>
-        <%= for row <- @arena do %>
+        <%= for row <- Arena.arena_as_list() do %>
           <tr>
             <td class="pr-2"><%= elem(hd(row).tile_ref, 0) %></td>
             <%= for game_tile <- row do %>
-              <%= draw_tile(game_tile, @hero_name) %>
+              <%= draw_tile(game_tile, @current_hero, @heroes) %>
             <% end %>
           </tr>
         <% end %>
@@ -27,31 +27,31 @@
     </div>
     <div class="w-full flex items-center justify-center mt-4">
       <div class="mr-2">
-        <%= button("Left", to: "/heroes/left", method: :patch, class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") %>
+        <button phx-click="left" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Left</button>
       </div>
       <div class="mr-2">
-        <%= button("Down", to: "/heroes/down", method: :patch, class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") %>
+        <button phx-click="up" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Up</button>
       </div>
       <div class="mr-2">
-        <%= button("Up", to: "/heroes/up", method: :patch, class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") %>
+        <button phx-click="down" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Down</button>
       </div>
       <div class="mr-2">
-        <%= button("Right", to: "/heroes/right", method: :patch, class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") %>
+        <button phx-click="right" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Right</button>
       </div>
       <div>
-        <%= button("Attack", to: "/heroes/attack", method: :post, class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") %>
+        <button phx-click="attack" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Attack</button>
       </div>
     </div>
     <div class="flex items-center justify-center mt-2">
       <div class="flex items-center justify-center">
-        <%= button("Respawn", to: Routes.hero_path(@conn, :respawn), method: :patch, class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") %>
+        <button phx-click="respawn" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Respawn</button>
       </div>
       <div class="flex items-center justify-center ml-2">
-        <%= button("End Game", to: Routes.hero_path(@conn, :remove_hero), method: :delete, class: "inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500") %>
+        <button phx-click="end" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">End Game</button>
       </div>
     </div>
-  </div>
-  <div class="ml-4">
+    </div>
+    <div class="ml-4">
     <table>
       <tr>
         <td class="w-12 h-12 border-2 border-gray-900 bg-gray-700"></td>

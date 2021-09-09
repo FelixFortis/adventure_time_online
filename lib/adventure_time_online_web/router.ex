@@ -4,7 +4,8 @@ defmodule AdventureTimeOnlineWeb.Router do
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug :fetch_flash
+    plug :fetch_live_flash
+    plug :put_root_layout, {AdventureTimeOnlineWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -20,17 +21,7 @@ defmodule AdventureTimeOnlineWeb.Router do
 
     resources "/heroes", HeroController, only: [:new, :create]
 
-    delete "/heroes", HeroController, :remove_hero
-    patch "/heroes/respawn", HeroController, :respawn
-
-    patch "/heroes/left", HeroController, :move_left
-    patch "/heroes/right", HeroController, :move_right
-    patch "/heroes/up", HeroController, :move_up
-    patch "/heroes/down", HeroController, :move_down
-
-    post "/heroes/attack", HeroController, :attack
-
-    get "/game", HeroController, :game
+    live "/game", HeroLive
   end
 
   # Other scopes may use custom stacks.

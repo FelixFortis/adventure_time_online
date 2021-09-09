@@ -34,6 +34,8 @@ defmodule AdventureTimeOnline.MixProject do
   defp deps do
     [
       {:phoenix, "~> 1.5.9"},
+      {:phoenix_live_view, "~> 0.15.1"},
+      {:floki, ">= 0.30.0", only: :test},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:phoenix_live_dashboard, "~> 0.4"},
@@ -42,7 +44,7 @@ defmodule AdventureTimeOnline.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:adventure_time, git: "https://github.com/FelixFortis/adventure_time.git", tag: "v0.1.1"}
+      {:adventure_time, git: "https://github.com/FelixFortis/adventure_time.git", tag: "v0.1.2"}
       # {:adventure_time, path: "../adventure_time"}
     ]
   end
