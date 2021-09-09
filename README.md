@@ -2,7 +2,7 @@
 
 ## Overview
 
-An Elixir/Phoenix application for playing the [AdventureTime](https://github.com/FelixFortis/adventure_time) game in the browser.
+An Elixir/Phoenix application for playing the [AdventureTime](https://github.com/FelixFortis/adventure_time) game in the browser. LiveView and PubSub are used for updating the page when users interact with their heroes.
 
 ## Demo
 
