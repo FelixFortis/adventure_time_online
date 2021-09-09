@@ -11,7 +11,7 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
         heroes = HeroServer.all_heroes_as_map()
         socket = assign(socket, current_hero: current_hero, heroes: heroes)
 
-        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
 
         {:ok, socket}
 
@@ -34,7 +34,7 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
         heroes = %{socket.assigns.heroes | hero.tag => hero}
         socket = assign(socket, current_hero: hero, heroes: heroes)
 
-        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
 
         {:noreply, socket}
 
@@ -54,7 +54,7 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
         heroes = Map.delete(socket.assigns.heroes, hero.tag)
         socket = assign(socket, :heroes, heroes)
 
-        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
 
         {:noreply, redirect(socket, to: "/")}
 
@@ -75,7 +75,7 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
         heroes = %{socket.assigns.heroes | hero.tag => hero}
         socket = assign(socket, current_hero: hero, heroes: heroes)
 
-        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
 
         {:noreply, socket}
 
@@ -96,7 +96,7 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
         heroes = %{socket.assigns.heroes | hero.tag => hero}
         socket = assign(socket, current_hero: hero, heroes: heroes)
 
-        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
 
         {:noreply, socket}
 
@@ -117,7 +117,7 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
         heroes = %{socket.assigns.heroes | hero.tag => hero}
         socket = assign(socket, current_hero: hero, heroes: heroes)
 
-        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
 
         {:noreply, socket}
 
@@ -138,7 +138,7 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
         heroes = %{socket.assigns.heroes | hero.tag => hero}
         socket = assign(socket, current_hero: hero, heroes: heroes)
 
-        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
 
         {:noreply, socket}
 
@@ -156,7 +156,7 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
         heroes = HeroServer.all_heroes_as_map()
         socket = assign(socket, :heroes, heroes)
 
-        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
 
         {:noreply, socket}
 
@@ -166,8 +166,8 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
   end
 
   @impl true
-  def handle_info(:update, socket) do
-    {:noreply, socket}
+  def handle_info({:update, heroes}, socket) do
+    {:noreply, assign(socket, heroes: heroes)}
   end
 
   defp draw_tile(game_tile, hero, _heroes) do
