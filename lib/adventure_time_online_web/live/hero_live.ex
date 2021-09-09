@@ -4,16 +4,14 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
   alias AdventureTime.{Arena, GameTile, HeroServer, HeroSupervisor}
 
   @impl true
-  def mount(_params, %{"current_hero" => hero_name}, socket) do
-    case HeroServer.hero_pid(hero_name) do
+  def mount(_params, %{"current_hero" => current_hero}, socket) do
+    case HeroServer.hero_pid(current_hero.name) do
       pid when is_pid(pid) ->
         if connected?(socket), do: Phoenix.PubSub.subscribe(AdventureTimeOnline.PubSub, "heroes")
-
         heroes = HeroServer.all_heroes_as_map()
-        current_hero = HeroServer.get_hero(hero_name)
+        socket = assign(socket, current_hero: current_hero, heroes: heroes)
 
-        socket =
-          assign(socket, current_hero_name: hero_name, current_hero: current_hero, heroes: heroes)
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
 
         {:ok, socket}
 
@@ -29,11 +27,16 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
 
   @impl true
   def handle_event("respawn", _, socket) do
-    case HeroServer.hero_pid(socket.assigns.current_hero_name) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
-        HeroServer.respawn(socket.assigns.current_hero_name)
+        hero = HeroServer.respawn(socket.assigns.current_hero.name)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
 
         Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+
+        {:noreply, socket}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -42,9 +45,14 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
 
   @impl true
   def handle_event("end", _, socket) do
-    case HeroServer.hero_pid(socket.assigns.current_hero_name) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
-        HeroSupervisor.stop_hero(socket.assigns.current_hero_name)
+        hero = socket.assigns.current_hero
+
+        HeroSupervisor.stop_hero(hero.name)
+
+        heroes = Map.delete(socket.assigns.heroes, hero.tag)
+        socket = assign(socket, :heroes, heroes)
 
         Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
 
@@ -57,14 +65,19 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
 
   @impl true
   def handle_event("left", _, socket) do
-    case HeroServer.hero_pid(socket.assigns.current_hero_name) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
         {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
         new_tile_ref = {y_axis, x_axis - 1}
 
-        HeroServer.move_to(socket.assigns.current_hero_name, new_tile_ref)
+        hero = HeroServer.move_to(socket.assigns.current_hero.name, new_tile_ref)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
 
         Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+
+        {:noreply, socket}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -73,14 +86,19 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
 
   @impl true
   def handle_event("right", _, socket) do
-    case HeroServer.hero_pid(socket.assigns.current_hero_name) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
         {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
         new_tile_ref = {y_axis, x_axis + 1}
 
-        HeroServer.move_to(socket.assigns.current_hero_name, new_tile_ref)
+        hero = HeroServer.move_to(socket.assigns.current_hero.name, new_tile_ref)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
 
         Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+
+        {:noreply, socket}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -89,14 +107,19 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
 
   @impl true
   def handle_event("up", _, socket) do
-    case HeroServer.hero_pid(socket.assigns.current_hero_name) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
         {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
         new_tile_ref = {y_axis - 1, x_axis}
 
-        HeroServer.move_to(socket.assigns.current_hero_name, new_tile_ref)
+        hero = HeroServer.move_to(socket.assigns.current_hero.name, new_tile_ref)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
 
         Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+
+        {:noreply, socket}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -105,14 +128,19 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
 
   @impl true
   def handle_event("down", _, socket) do
-    case HeroServer.hero_pid(socket.assigns.current_hero_name) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
         {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
         new_tile_ref = {y_axis + 1, x_axis}
 
-        HeroServer.move_to(socket.assigns.current_hero_name, new_tile_ref)
+        hero = HeroServer.move_to(socket.assigns.current_hero.name, new_tile_ref)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
 
         Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+
+        {:noreply, socket}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -121,11 +149,16 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
 
   @impl true
   def handle_event("attack", _, socket) do
-    case HeroServer.hero_pid(socket.assigns.current_hero_name) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
-        HeroServer.attack(socket.assigns.current_hero_name)
+        HeroServer.attack(socket.assigns.current_hero.name)
+
+        heroes = HeroServer.all_heroes_as_map()
+        socket = assign(socket, :heroes, heroes)
 
         Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", :update)
+
+        {:noreply, socket}
 
       nil ->
         {:ok, redirect(socket, to: "/")}
@@ -134,11 +167,10 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
 
   @impl true
   def handle_info(:update, socket) do
-    heroes = HeroServer.all_heroes_as_map()
-    {:noreply, assign(socket, :heroes, heroes)}
+    {:noreply, socket}
   end
 
-  defp draw_tile(game_tile, hero) do
+  defp draw_tile(game_tile, hero, _heroes) do
     cond do
       game_tile.walkable == false ->
         ~e{<td class="w-12 h-12 border-2 border-gray-900 bg-gray-700"></td>}

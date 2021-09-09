@@ -19,7 +19,7 @@
           <tr>
             <td class="pr-2"><%= elem(hd(row).tile_ref, 0) %></td>
             <%= for game_tile <- row do %>
-              <%= draw_tile(game_tile, @current_hero) %>
+              <%= draw_tile(game_tile, @current_hero, @heroes) %>
             <% end %>
           </tr>
         <% end %>
