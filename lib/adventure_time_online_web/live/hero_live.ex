@@ -85,7 +85,49 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
   end
 
   @impl true
+  def handle_event("action", %{"key" => "ArrowLeft"}, socket) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
+      pid when is_pid(pid) ->
+        {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
+        new_tile_ref = {y_axis, x_axis - 1}
+
+        hero = HeroServer.move_to(socket.assigns.current_hero.name, new_tile_ref)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
+
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
+
+        {:noreply, socket}
+
+      nil ->
+        {:ok, redirect(socket, to: "/")}
+    end
+  end
+
+  @impl true
   def handle_event("right", _, socket) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
+      pid when is_pid(pid) ->
+        {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
+        new_tile_ref = {y_axis, x_axis + 1}
+
+        hero = HeroServer.move_to(socket.assigns.current_hero.name, new_tile_ref)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
+
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
+
+        {:noreply, socket}
+
+      nil ->
+        {:ok, redirect(socket, to: "/")}
+    end
+  end
+
+  @impl true
+  def handle_event("action", %{"key" => "ArrowRight"}, socket) do
     case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
         {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
@@ -127,7 +169,49 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
   end
 
   @impl true
+  def handle_event("action", %{"key" => "ArrowUp"}, socket) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
+      pid when is_pid(pid) ->
+        {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
+        new_tile_ref = {y_axis - 1, x_axis}
+
+        hero = HeroServer.move_to(socket.assigns.current_hero.name, new_tile_ref)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
+
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
+
+        {:noreply, socket}
+
+      nil ->
+        {:ok, redirect(socket, to: "/")}
+    end
+  end
+
+  @impl true
   def handle_event("down", _, socket) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
+      pid when is_pid(pid) ->
+        {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
+        new_tile_ref = {y_axis + 1, x_axis}
+
+        hero = HeroServer.move_to(socket.assigns.current_hero.name, new_tile_ref)
+
+        heroes = %{socket.assigns.heroes | hero.tag => hero}
+        socket = assign(socket, current_hero: hero, heroes: heroes)
+
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
+
+        {:noreply, socket}
+
+      nil ->
+        {:ok, redirect(socket, to: "/")}
+    end
+  end
+
+  @impl true
+  def handle_event("action", %{"key" => "ArrowDown"}, socket) do
     case HeroServer.hero_pid(socket.assigns.current_hero.name) do
       pid when is_pid(pid) ->
         {y_axis, x_axis} = socket.assigns.current_hero.tile_ref
@@ -163,6 +247,29 @@ defmodule AdventureTimeOnlineWeb.HeroLive do
       nil ->
         {:ok, redirect(socket, to: "/")}
     end
+  end
+
+  @impl true
+  def handle_event("action", %{"key" => " "}, socket) do
+    case HeroServer.hero_pid(socket.assigns.current_hero.name) do
+      pid when is_pid(pid) ->
+        HeroServer.attack(socket.assigns.current_hero.name)
+
+        heroes = HeroServer.all_heroes_as_map()
+        socket = assign(socket, :heroes, heroes)
+
+        Phoenix.PubSub.broadcast(AdventureTimeOnline.PubSub, "heroes", {:update, heroes})
+
+        {:noreply, socket}
+
+      nil ->
+        {:ok, redirect(socket, to: "/")}
+    end
+  end
+
+  @impl true
+  def handle_event("action", _, socket) do
+    {:noreply, socket}
   end
 
   @impl true

@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center">
+<div class="flex items-center justify-center" phx-window-keyup="action">
   <div>
     <div>
       <table>
@@ -42,6 +42,9 @@
         <button phx-click="attack" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Attack</button>
       </div>
     </div>
+    <div class="w-full flex items-center justify-center mt-4">
+      <span class="text-sm text-gray-600">(You can also use the arrow keys to move and the spacebar to attack)</span>
+    </div>
     <div class="flex items-center justify-center mt-2">
       <div class="flex items-center justify-center">
         <button phx-click="respawn" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Respawn</button>
@@ -50,8 +53,8 @@
         <button phx-click="end" class="inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">End Game</button>
       </div>
     </div>
-    </div>
-    <div class="ml-4">
+  </div>
+  <div class="ml-4">
     <table>
       <tr>
         <td class="w-12 h-12 border-2 border-gray-900 bg-gray-700"></td>
